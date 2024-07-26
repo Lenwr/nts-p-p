@@ -4,11 +4,8 @@ import React, {FC, useEffect, useState} from 'react';
 import {supabase} from "@/utils/supabase/client";
 import {Carousel} from 'antd';
 
-interface Props {
-    idArticle: string
-}
 
-const ArticlePage: FC<Props> = ({idArticle}) => {
+const ArticlePage = (props:any) => {
     const [items, setItems] = useState<any[]>([]);
     useEffect(() => {
         const fetchItems = async () => {
@@ -16,7 +13,7 @@ const ArticlePage: FC<Props> = ({idArticle}) => {
                 const {data, error} = await supabase
                     .from('articles')
                     .select('nom_article ,prix_article , quantite')
-                    .eq('commande_id', idArticle);
+                    .eq('commande_id',props.idArticle);
                 if (error) {
                     console.error(error);
                 } else {

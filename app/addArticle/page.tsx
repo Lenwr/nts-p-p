@@ -18,17 +18,15 @@ const validateMessages = {
         range: '${label} must be between ${min} and ${max}',
     },
 };
-interface Props {
-    data : string
-}
+
 /* eslint-enable no-template-curly-in-string */
-const AddArticlePage : React.FC<Props> = ({data}) => {
+const AddArticlePage = (props:any) => {
     const [form] = Form.useForm();
     const onFinish = async (values: any) => {
         const { error } = await supabase
             .from('articles')
             .insert({
-                commande_id: data,
+                commande_id:props.data ,
                 nom_article: values.user.name,
                 prix_article : values.user.prix,
                 quantite:values.user.quantite ,
