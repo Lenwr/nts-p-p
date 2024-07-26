@@ -1,15 +1,12 @@
 
 "use client"
 import React, {useEffect, useState} from 'react';
-import {Button, Form, Input, Select} from 'antd';
+import {Button, Form, Input, message, Select} from 'antd';
 import {supabase} from "@/utils/supabase/client";
 const layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 16 },
 };
-
-
-
 /* eslint-disable no-template-curly-in-string */
 const validateMessages = {
     required: '${label} is required!',
@@ -22,34 +19,34 @@ const validateMessages = {
     },
 };
 /* eslint-enable no-template-curly-in-string */
-const [form] = Form.useForm();
-const onFinish = async (values: any) => {
-    const { error } = await supabase
-        .from('customers')
-        .insert({
-            nom: values.user.name,
-            prenoms : values.user.surname,
-            adresse:values.user.address ,
-            telephone: values.user.phone
-        })
-    form.resetFields();
-    console.log(values);
-};
-
-const Page : React.FC = () => {
-
-
-    const [country , setCountry] = useState()
+const FormPage : React.FC = () => {
+    const [country , setCountry] = useState('')
     const handleChange = (e:any) => {
+        setCountry(e)
+    };
+    const [form] = Form.useForm();
+    const onFinish = async (values: any) => {
+        const { error } = await supabase
+            .from('customers')
+            .insert({
+                nom: values.user.name,
+                prenoms : values.user.surname,
+                adresse:values.user.address ,
+                telephone: values.user.phone,
+                country:country
+            })
+        form.resetFields();
+        setCountry('')
+        message.success('Votre commande à bien été ajouté').then(r => r);
     };
     return(
-    <div className="p-6 flex flex-col"  >
-        <text className="p-6 bg-blue-600 text-white rounded-2xl shadow-2xl my-4">Enregistrer un client </text>
+    <div className=" flex flex-col"  >
         <Form
+            form={form}
             {...layout}
             name="nest-messages"
             onFinish={onFinish}
-            style={{ maxWidth: 600 , paddingTop:50 }}
+            style={{ maxWidth: 600 , paddingTop:10 }}
             validateMessages={validateMessages}
         >
             <Form.Item name={['user', 'name']} label="Nom" rules={[{ required: true }]}>
@@ -85,4 +82,4 @@ const Page : React.FC = () => {
     </div>
     )
 };
-export default Page;
+export default FormPage;
