@@ -1,7 +1,7 @@
 "use client"
 import {Button, Drawer, FloatButton, message, Popconfirm, PopconfirmProps, Select, Space, Table, Tag} from 'antd';
 import type { TableProps } from 'antd';
-import React, {useEffect, useReducer, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {supabase} from "@/utils/supabase/client";
 import { useRouter } from 'next/navigation'
 import FormPage from "@/app/formulaire/page";
@@ -46,7 +46,7 @@ const Page: React.FC = () => {
         })
     };
 
-    useReducer(() => {
+    useEffect(() => {
         const fetchCustomers = async () => {
             try {
                 const { data, error } = await supabase
@@ -62,7 +62,7 @@ const Page: React.FC = () => {
             }
         };
         fetchCustomers();
-    }, [customers]);
+    }, []);
     const columns: TableProps<DataType>['columns'] = [
         {
             title: 'Nom',
