@@ -1,7 +1,7 @@
 "use client"
 import {Button, Drawer, FloatButton, message, Popconfirm, PopconfirmProps, Select, Space, Table, Tag} from 'antd';
 import type { TableProps } from 'antd';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useReducer, useState} from 'react';
 import {supabase} from "@/utils/supabase/client";
 import { useRouter } from 'next/navigation'
 import FormPage from "@/app/formulaire/page";
@@ -12,14 +12,14 @@ interface DataType {
     adresse: string;
     country: string;
     telephone:string ,
-    id: string
+    key: string
 }
-const { Option } = Select;
 
 const Page: React.FC = () => {
     const router = useRouter();
     const [customers , setCustomers] = useState<any[]>([]);
     const [open, setOpen] = useState(false);
+    const [reload, setReload] = useState(false);
 
     const showDrawer = () => {
         setOpen(true);
@@ -46,11 +46,7 @@ const Page: React.FC = () => {
         })
     };
 
-    const cancelDelete: PopconfirmProps['onCancel'] = (e) => {
-        console.log(e);
-        message.error('vous avez cliqué sur oui');
-    };
-    useEffect(() => {
+    useReducer(() => {
         const fetchCustomers = async () => {
             try {
                 const { data, error } = await supabase
@@ -95,16 +91,26 @@ const Page: React.FC = () => {
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <a className="p-2 bg-blue-400 rounded-md text-white" onClick={()=>{navigateTo(record.id)}} >commandes</a>
-                    <Button danger className="p-2  rounded-md text-white" onClick={async ()=>{ await Delete(record.id)}} ><DeleteOutlined /></Button>
+                    <a className="p-2 bg-blue-400 rounded-md text-white" onClick={()=>{navigateTo(record.key)}} >commandes</a>
+                    <Button danger className="p-2  rounded-md text-white" onClick={async ()=>{ await Delete(record.key)}} ><DeleteOutlined /></Button>
                 </Space>
             ),
         },
     ];
 
-    const data: DataType[] = customers
+    const data: DataType[] = customers.map((item:any) => {
+        return {
+            key: item.id,
+            nom: item.nom,
+            prenoms: item.prenoms,
+            adresse: item.adresse,
+            country: item.country,
+            telephone:item.telephone ,
+            // Ajoutez ici d'autres propriétés si nécessaire
+        };
+    });
     return (
-        <div className=" min-w-full min-h-screen p-2">
+        <div >
             <Table columns={columns} dataSource={data} />
 
             <Drawer
@@ -114,7 +120,6 @@ const Page: React.FC = () => {
                 open={open}
                 styles={{
                     body: {
-                        minHeight:'screen'
                     },
                 }}
                 extra={

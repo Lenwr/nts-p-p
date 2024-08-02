@@ -28,7 +28,7 @@ const AddArticlePage = (props:any) => {
 
     useEffect(() => {
         setCountry(country);
-    }, [country]);
+    }, []);
     async function handleChange (e:any) {
         setCountry(e)
     };

@@ -76,7 +76,7 @@ const Page = ({params,}: {
             }
         };
         fetchOrders().then(r => r);
-    }, [orders]);
+    }, []);
     const showPromiseConfirm = () => {
         confirm({
             title: 'Créer une nouvelle commande',
@@ -186,12 +186,13 @@ const Page = ({params,}: {
             <h1>Commandes</h1>
             <div>
                 {
-                    orders.map((item, key) => (
-                        <div className="my-3">
-                            <h1 className="text-center text-2xl bg-[#364d79] py-2 text-white bg-gray-500">{(formatDate(item.created_at))}</h1>
+                    orders.map((item ,index) => (
+                        <div key={index} className="my-3">
+                            <h1 className="text-center text-l bg-[#364d79] py-2 text-white bg-gray-500">{(formatDate(item.created_at))}</h1>
+                            <h1 className="text-center text-l bg-[#364d79] py-2 text-white bg-gray-500">{item.statut_commande}</h1>
                             <Card
                                 style={{width: '100%'}}
-                                title={item.statut_commande}
+                                title={''}
                                 actions={[
                                     <FileAddOutlined
                                         onClick={() => {

@@ -7,6 +7,7 @@ import {Carousel, GetProp, Image, UploadFile, UploadProps} from 'antd';
 
 const ArticlePage = (props: any) => {
     const [items, setItems] = useState<any[]>([]);
+    const [reload, setReload] = useState(false);
     useEffect(() => {
         const fetchItems = async () => {
             try {
@@ -24,7 +25,7 @@ const ArticlePage = (props: any) => {
             }
         };
         fetchItems();
-    }, [items]);
+    }, [reload]);
     const contentStyle: React.CSSProperties = {
         margin: 0,
         height: 'auto',
@@ -40,25 +41,13 @@ const ArticlePage = (props: any) => {
         textAlign: 'center',
         background: '#364d79',
     };
-    type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
-
-    const changeUrl = async (item: any) => {
-        const getBase64 = (file: FileType): Promise<string> =>
-            new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result as string);
-                reader.onerror = (error) => reject(error);
-            });
-    }
-
 
     return (
         <div>
             <Carousel arrows infinite={false}>
                 {
-                    items.map((item) => (
-                        <div className="py-2 flex flex-row">
+                    items.map((item , index) => (
+                        <div key={index} className="py-2 flex flex-row">
 
                             <h3 style={contentStyle}>Article : {item.nom_article}</h3>
                             <h3 style={contentStyle}> Prix : {item.prix_article}</h3>
