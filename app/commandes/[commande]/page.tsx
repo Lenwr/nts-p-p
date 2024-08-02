@@ -205,6 +205,9 @@ const Page = ({params,}: {
                                                 ),
                                             });
                                         }}/>,
+                                    <Space.Compact style={{ width: '100%' }}>
+                                        <Input defaultValue={item.id} />
+                                    </Space.Compact>
                                 ]}
                                 extra={<div className="flex justify-between flex-row">
                                     <Form

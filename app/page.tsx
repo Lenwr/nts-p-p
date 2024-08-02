@@ -40,7 +40,7 @@ export default async function Index() {
                         className="font-bold hover:underline"
                         rel="noreferrer"
                     >
-                        Jefferson
+                       Otaku Dev
                     </a>
                 </p>
             </footer>
