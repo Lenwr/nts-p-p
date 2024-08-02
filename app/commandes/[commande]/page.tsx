@@ -188,9 +188,10 @@ const Page = ({params,}: {
                 {
                     orders.map((item, key) => (
                         <div className="my-3">
+                            <h1 className="text-center text-2xl bg-[#364d79] py-2 text-white bg-gray-500">{(formatDate(item.created_at))}</h1>
                             <Card
                                 style={{width: '100%'}}
-                                title={"Commande__" + item.numero_commande + "__Date__" + (formatDate(item.created_at))+". Statut de la commande : "+ item.statut_commande}
+                                title={item.statut_commande}
                                 actions={[
                                     <FileAddOutlined
                                         onClick={() => {
