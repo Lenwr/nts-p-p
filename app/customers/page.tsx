@@ -72,6 +72,7 @@ const Page: React.FC = () => {
             title: 'Nom',
             dataIndex: 'nom',
             key:'nom',
+            fixed:'left',
             render: (text) => <a>{text}</a>,
         },
         {
@@ -103,7 +104,7 @@ const Page: React.FC = () => {
 
     const data: DataType[] = customers
     return (
-        <div className="bg-blue-400 min-w-full min-h-full p-2">
+        <div className=" min-w-full min-h-screen p-2">
             <Table columns={columns} dataSource={data} />
 
             <Drawer
@@ -113,6 +114,7 @@ const Page: React.FC = () => {
                 open={open}
                 styles={{
                     body: {
+                        minHeight:'screen'
                     },
                 }}
                 extra={
@@ -126,7 +128,7 @@ const Page: React.FC = () => {
                 shape="circle"
                 type="primary"
                 onClick={showDrawer}
-                style={{ top: 40 , right: 40 }}
+                style={{ top: 100 , right: 40 }}
                 icon={<UserAddOutlined />}
             />
         </div>

@@ -20,10 +20,7 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 const FormPage : React.FC = () => {
-    const [country , setCountry] = useState('')
-    const handleChange = (e:any) => {
-        setCountry(e)
-    };
+
     const [form] = Form.useForm();
     const onFinish = async (values: any) => {
         const { error } = await supabase
@@ -33,10 +30,9 @@ const FormPage : React.FC = () => {
                 prenoms : values.user.surname,
                 adresse:values.user.address ,
                 telephone: values.user.phone,
-                country:country
+
             })
         form.resetFields();
-        setCountry('')
         message.success('Votre commande à bien été ajouté').then(r => r);
     };
     return(
@@ -55,18 +51,7 @@ const FormPage : React.FC = () => {
             <Form.Item name={['user', 'surname']} label="Prénoms" >
                 <Input />
             </Form.Item>
-            <Form.Item label="Pays" name={['user', 'country']}>
-                <Select
-                    defaultValue="Togo"
-                    style={{ maxWidth: 600 }}
-                    onChange={handleChange}
-                    options={[
-                        { value: 'Togo', label: 'Togo' },
-                        { value: 'Senegal', label: 'Senegal' },
-                        { value: 'Mali', label: 'Mali' },
-                    ]}
-                />
-            </Form.Item>
+
             <Form.Item name={['user', 'address']} label="Adresse" >
                 <Input />
             </Form.Item>

@@ -12,7 +12,6 @@ import AddArticlePage from "@/app/addArticle/page";
 import Meta from "antd/es/card/Meta";
 import type {PopconfirmProps} from 'antd';
 import {message, Popconfirm} from 'antd';
-import {useRouter} from 'next/router';
 
 
 const {confirm} = Modal;
@@ -52,29 +51,20 @@ const items: MenuProps['items'] = [
     },
 ];
 
-interface CommandeProps {
-    id: string,
-}
-
 const Page = ({params,}: {
     params: { commande: string };
 }) => {
     const [form] = Form.useForm();
     const [orders, setOrders] = useState<any[]>([]);
     const [messageApi, contextHolder] = message.useMessage();
-    const success = () => {
-        messageApi.open({
-            type: 'success',
-            content: 'Votre commande à bien été crée',
-        });
-    };
+
     useEffect(() => {
         const fetchOrders = async () => {
             const order_id = params.commande
             try {
                 const {data, error} = await supabase
                     .from('commandes')
-                    .select('id ,numero_commande , created_at')
+                    .select('id ,numero_commande , created_at, statut_commande')
                     .eq('client_id', order_id);
                 if (error) {
                     console.error(error);
@@ -139,11 +129,6 @@ const Page = ({params,}: {
         });
     };
 
-    const contentListNoTitle: Record<string, React.ReactNode> = {
-        article: <p>article content</p>,
-        app: <p>app content</p>,
-        project: <p>project content</p>,
-    };
     const confirmDelete: PopconfirmProps['onConfirm'] = async (idToPass) => {
         return new Promise<void>(async (resolve, reject) => {
             const response = await supabase
@@ -177,7 +162,7 @@ const Page = ({params,}: {
         const hours = date.getUTCHours();
         const minutes = date.getUTCMinutes();
 
-        // Ajouter un zéro devant les heures et les minutes si nécessaire
+
         const formattedHours = hours < 10 ? `0${hours}` : hours;
         const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
 
@@ -205,7 +190,7 @@ const Page = ({params,}: {
                         <div className="my-3">
                             <Card
                                 style={{width: '100%'}}
-                                title={"Commande__" + item.numero_commande + "__Date__" + (formatDate(item.created_at))}
+                                title={"Commande__" + item.numero_commande + "__Date__" + (formatDate(item.created_at))+". Statut de la commande : "+ item.statut_commande}
                                 actions={[
                                     <FileAddOutlined
                                         onClick={() => {
@@ -227,10 +212,10 @@ const Page = ({params,}: {
                                         onFinish={()=>{onFinish(item.id)}}
                                         style={{ maxWidth: 'auto' , marginRight:"50" , display:"flex", flexDirection:"row" ,justifyItems:'between',marginTop:20 }}
                                     >
-                                        <Form.Item label="Statut " >
+                                        <Form.Item label="" >
                                             <Select
                                                 className="mr-4"
-                                                defaultValue="En attente"
+                                                defaultValue="statut"
                                                 style={{width: 120}}
                                                 onChange={handleChange}
                                                 options={[

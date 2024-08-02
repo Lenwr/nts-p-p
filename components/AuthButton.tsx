@@ -1,6 +1,8 @@
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import {LoginOutlined, LogoutOutlined} from "@ant-design/icons";
+import {FloatButton} from "antd";
 
 export default async function AuthButton() {
   const supabase = createClient();
@@ -19,10 +21,11 @@ export default async function AuthButton() {
 
   return user ? (
     <div className="flex items-center gap-4">
-      Hey, {user.email}!
       <form action={signOut}>
-        <button className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover">
-          Logout
+        <button >
+          <FloatButton description="Déconnexion" shape="square"
+                       style={{insetInlineEnd: 24 , width:100 , padding:10}}
+                       icon={<LogoutOutlined/>}/>
         </button>
       </form>
     </div>
@@ -31,7 +34,9 @@ export default async function AuthButton() {
       href="/login"
       className="py-2 px-3 flex rounded-md no-underline bg-btn-background hover:bg-btn-background-hover"
     >
-      Login
+      <FloatButton description="Connexion" shape="square"
+                   style={{insetInlineEnd: 24 , width:100 , padding:10}}
+                   icon={<LoginOutlined/>}/>
     </Link>
   );
 }

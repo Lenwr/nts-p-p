@@ -6,9 +6,12 @@
     "start": "next start"
   },
   "dependencies": {
+    "@headlessui/react": "^2.1.2",
+    "@heroicons/react": "^2.1.5",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
     "antd": "^5.19.2",
+    "antd-img-crop": "^4.22.0",
     "geist": "^1.2.1",
     "next": "latest",
     "react": "18.2.0",
